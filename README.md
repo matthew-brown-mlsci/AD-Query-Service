@@ -1,11 +1,12 @@
-# AD-Query-Service
+## __AD-Query-Service__
 Python Windows service that provides various AD query data via a flask-powered API
 
 - Used as some glue to expose various AD query data / functions to web browsers via JSONP requests.  
+- Requires the windows pc/server host is on a domain and has access to query a domain controller.
 
 ***
 
-- To compile python -> service .exe
+## __To compile python -> service .exe__
 ```
 set PYTHONHOME=C:\python37\python-3.7.1.amd64\
 set PYTHONPATH=C:\python37\python-3.7.1.amd64\Lib\
@@ -23,18 +24,27 @@ cd "c:\scripts\AD query service"
 - Edit domains.conf, specify your AD specific DCs and fqdn(s) for any domain controllers you want to query
 - Make sure the service is running and port 9994 is open and accepting connections
 
-- testing:
+## __Testing:__
++ List available domains in the domains.conf file, several endpoints require specifying which domain to use (thus specifying ldap server)
 ```
 curl -s "http://localhost:9994/ListKnownDomains"
 ```
 
-+ List available domains in the domains.conf file, several endpoints require specifying which domain to use (thus specifying ldap server)
-*curl -s "http://localhost:9994/GroupUsers?domain-EXAMPLE&group=TestGroup"
 + requires 'domain' and 'group' GET request args - returns AD group DN, ldap_server queried, and member user DN's + samAccountNames
-*curl -s "http://localhost:9994/UserInGroup?domain-EXAMPLE&group=TestGroup&samAccountName=testuser"
+```
+curl -s "http://localhost:9994/GroupUsers?domain-EXAMPLE&group=TestGroup"
+```
+
 + requires 'domain' and 'group' and 'samAccountName' GET request args - verifies if samAccountName is in group or not
-*curl -s "http://localhost:9994/UserInfo?domain=EXAMPLE&samAccountName=testuser"
+```
+curl -s "http://localhost:9994/UserInGroup?domain-EXAMPLE&group=TestGroup&samAccountName=testuser"
+```
+
 + requires 'domain' and 'samAccountName' GET request args - Lists a bunch of information about the user account.
+```
+curl -s "http://localhost:9994/UserInfo?domain=EXAMPLE&samAccountName=testuser"
+```
+
 
 - There are also a few other misc endpoints (run a command, list routes, etc) 
 
