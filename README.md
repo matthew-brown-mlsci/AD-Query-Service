@@ -6,6 +6,7 @@ Python Windows service that provides various AD query data via a flask-powered A
 ***
 
 - To compile python -> service .exe
+```
 set PYTHONHOME=C:\python37\python-3.7.1.amd64\
 set PYTHONPATH=C:\python37\python-3.7.1.amd64\Lib\
 pip install pyinstaller
@@ -17,12 +18,16 @@ copy "domains.conf" "c:\scripts\AD query service\domains.conf"
 c:
 cd "c:\scripts\AD query service"
 "AD query service.exe" install
+```
 
 - Edit domains.conf, specify your AD specific DCs and fqdn(s) for any domain controllers you want to query
 - Make sure the service is running and port 9994 is open and accepting connections
 
 - testing:
-*curl -s "http://localhost:9994/ListKnownDomains"
+```
+curl -s "http://localhost:9994/ListKnownDomains"
+```
+
 + List available domains in the domains.conf file, several endpoints require specifying which domain to use (thus specifying ldap server)
 *curl -s "http://localhost:9994/GroupUsers?domain-EXAMPLE&group=TestGroup"
 + requires 'domain' and 'group' GET request args - returns AD group DN, ldap_server queried, and member user DN's + samAccountNames
